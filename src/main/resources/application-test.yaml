@@ -1,0 +1,68 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: user
+    password: password
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      channel:
+        create-account: create-account-channel
+
+server:
+  port: 8090
+
+logging:
+  level:
+    root: info
+
+account:
+  max-accounts-quantity: 4
+  savings:
+    accruing-interest:
+      cron: "0 0 0 * * ?"
+      batch-size: 2500
+  number:
+    identity-by-type:
+      individual: 3222
+      legal: 4333
+      savings: 5444
+      debit: 6555
+    length-by-type:
+      individual: 12
+      legal: 20
+      savings: 16
+      debit: 16
+    generation:
+      cron: "0 0 0 * * ?"
+      max-amount-by-type:
+        INDIVIDUAL: 5
+        LEGAL: 6
+        SAVINGS: 7
+        DEBIT: 8
+
+async:
+  thread-name-prefix: AsyncThread-
+  core-pool-size: 5
+  max-pool-size: 10
+  queue_capacity: 100
+  create-account-pool:
+    core-pool-size: 2
+    max-pool-size: 4
+    queue-capacity: 500
+    name-prefix: create-account-
